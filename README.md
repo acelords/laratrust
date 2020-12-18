@@ -1,5 +1,13 @@
 <p align="center"><img src="https://cdn.rawgit.com/santigarcor/laratrust/135aa15fecd22a512c444389d1f8cb94e72d0fa7/docs/img/laratrust.svg"></p>
 
+# Why This Fork
+This fork is meant to be used on AceLords projects, and thus contain other functionalities not requred in the official package by Santigarcor.
+
+### Installation
+`composer require acelords/laratrust`
+
+>NB: now read on the rest of the docs.
+
 # Laratrust (Laravel Package)
 
 [![tests](https://github.com/santigarcor/laratrust/workflows/tests/badge.svg)](https://github.com/santigarcor/laratrust/actions?query=workflow%3Atests)

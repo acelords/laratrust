@@ -1,5 +1,5 @@
 {
-    "name": "santigarcor/laratrust",
+    "name": "acelords/laratrust",
     "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
     "keywords": [
         "acl",
@@ -18,6 +18,10 @@
         {
             "name": "Santiago Garcia",
             "homepage": "http://santigarcor.me"
+        },
+        {
+            "name": "AceLords",
+            "homepage": "https://acelords.space"
         }
     ],
     "require": {
