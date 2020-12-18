@@ -6,7 +6,12 @@ This fork is meant to be used on AceLords projects, and thus contain other funct
 ### Installation
 `composer require acelords/laratrust`
 
+### Changelog
+#### 6.3.1.1
+- Added config `display_roles_permissions_being_checked` that appends the roles/permissions being checked and display in abort message
+
 >NB: now read on the rest of the docs.
+
 
 # Laratrust (Laravel Package)
 
