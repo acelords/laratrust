@@ -129,6 +129,10 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     protected function registerPermissionsToGate()
     {
+        if (!$this->app['config']->get('laratrust.permissions_as_gates')) {
+            return;
+        }
+
         app(Gate::class)->before(function (Authorizable $user, string $ability) {
             if (method_exists($user, 'hasPermission')) {
                 return $user->hasPermission($ability) ?: null;
@@ -190,6 +194,10 @@ class LaratrustServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__. '/../config/laratrust_seeder.php' => config_path('laratrust_seeder.php'),
             ], 'laratrust-seeder');
+            
+            $this->publishes([
+                __DIR__. '/../resources/views/panel' => resource_path('views/vendor/laratrust/panel'),
+            ], 'laratrust-views');
         }
     }
 
