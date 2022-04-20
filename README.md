@@ -16,17 +16,16 @@ This fork is meant to be used on AceLords projects, and thus contain other funct
 # Laratrust (Laravel Package)
 
 [![tests](https://github.com/santigarcor/laratrust/workflows/tests/badge.svg)](https://github.com/santigarcor/laratrust/actions?query=workflow%3Atests)
-[![Latest Stable Version](https://poser.pugx.org/santigarcor/laratrust/v)](//packagist.org/packages/santigarcor/laratrust)
-[![Total Downloads](https://poser.pugx.org/santigarcor/laratrust/downloads)](//packagist.org/packages/santigarcor/laratrust)
-[![StyleCI](https://styleci.io/repos/59691202/shield)](https://styleci.io/repos/59691202)
-[![License](https://poser.pugx.org/santigarcor/laratrust/license)](//packagist.org/packages/santigarcor/laratrust)
+[![Latest Stable Version](https://poser.pugx.org/acelords/laratrust/v)](//packagist.org/packages/acelords/laratrust)
+[![Total Downloads](https://poser.pugx.org/acelords/laratrust/downloads)](//packagist.org/packages/acelords/laratrust)
+[![License](https://poser.pugx.org/acelords/laratrust/license)](//packagist.org/packages/acelords/laratrust)
 
 ## Version Compatibility
 
  Laravel  | Laratrust
 :---------|:----------
-9.x  | [^6.3.1.3](https://laratrust.santigarcor.me/docs/6.x/)
- 8.x  | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
+ 9.x    | [7.x](https://laratrust.santigarcor.me/docs/7.x/)
+ 8.x    | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
  7.x    | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
  6.x    | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
  5.6.x - 5.8.x    | [5.2](https://laratrust.santigarcor.me/docs/5.2/)

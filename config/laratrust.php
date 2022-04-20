@@ -46,7 +46,7 @@ return [
         | NOTE: Currently the database check does not use cache.
         |
         */
-        'enabled' => env('LARATRUST_ENABLE_CACHE', true),
+        'enabled' => env('LARATRUST_ENABLE_CACHE', env('APP_ENV') === 'production'),
 
         /*
         |--------------------------------------------------------------------------
@@ -242,6 +242,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Laratrust Permissions as Gates
+    |--------------------------------------------------------------------------
+    |
+    | Determines if you can check if a user has a permission using the "can" method.
+    |
+    */
+    'permissions_as_gates' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Laratrust Panel
     |--------------------------------------------------------------------------
     |
@@ -300,6 +310,16 @@ return [
         |
         */
         'assign_permissions_to_user' => true,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Enable permissions creation
+        |--------------------------------------------------------------------------
+        |
+        | Enable/Disable the possibility to create permissions from the panel.
+        |
+        */
+        'create_permissions' => true,
 
         /*
         |--------------------------------------------------------------------------
