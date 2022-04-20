@@ -25,7 +25,8 @@ This fork is meant to be used on AceLords projects, and thus contain other funct
 
  Laravel  | Laratrust
 :---------|:----------
- 8.x 9.x  | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
+9.x  | [^6.3.1.3](https://laratrust.santigarcor.me/docs/6.x/)
+ 8.x  | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
  7.x    | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
  6.x    | [6.x](https://laratrust.santigarcor.me/docs/6.x/)
  5.6.x - 5.8.x    | [5.2](https://laratrust.santigarcor.me/docs/5.2/)
