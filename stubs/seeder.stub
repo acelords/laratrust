@@ -41,7 +41,7 @@ class LaratrustSeeder extends Seeder
             // Reading role permission modules
             foreach ($modules as $module => $value) {
 
-                foreach (explode(',', $value) as $p => $perm) {
+                foreach (explode(',', $value) as $perm) {
 
                     $permissionValue = $mapPermission->get($perm);
 
@@ -55,7 +55,7 @@ class LaratrustSeeder extends Seeder
                 }
             }
 
-            // Attach all permissions to the role
+            // Add all permissions to the role
             $role->permissions()->sync($permissions);
 
             if (Config::get('laratrust_seeder.create_users')) {
@@ -66,7 +66,7 @@ class LaratrustSeeder extends Seeder
                     'email' => $key.'@app.com',
                     'password' => bcrypt('password')
                 ]);
-                $user->attachRole($role);
+                $user->addRole($role);
             }
 
         }
@@ -89,7 +89,7 @@ class LaratrustSeeder extends Seeder
         if (Config::get('laratrust_seeder.truncate_tables')) {
             DB::table('{{rolesTableName}}')->truncate();
             DB::table('{{permissionsTableName}}')->truncate();
-            
+
             if (Config::get('laratrust_seeder.create_users')) {
                 $usersTable = (new {{userConfiguredModelClass}})->getTable();
                 DB::table($usersTable)->truncate();

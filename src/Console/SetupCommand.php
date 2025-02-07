@@ -30,11 +30,11 @@ class SetupCommand extends Command
         'laratrust:migration' => 'Creating migration',
         'laratrust:role' => 'Creating Role model',
         'laratrust:permission' => 'Creating Permission model',
-        'laratrust:add-trait' => 'Adding LaratrustUserTrait to User model'
+        // 'laratrust:add-trait' => 'Adding LaratrustUserTrait to User model'
     ];
 
     /**
-     * Create a new command instance
+     * Create a new command instance.
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class SetupCommand extends Command
     public function handle()
     {
         foreach ($this->calls as $command => $info) {
-            $this->line(PHP_EOL . $info);
+            $this->line(PHP_EOL.$info);
             $this->call($command);
         }
     }

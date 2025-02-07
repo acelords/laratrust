@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laratrust;
 
+use Illuminate\Contracts\Auth\Access\Authorizable;
+use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Contracts\Auth\Access\Authorizable;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class LaratrustServiceProvider extends ServiceProvider
 {
@@ -52,7 +56,7 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     protected function registerMiddlewares()
     {
-        if (!$this->app['config']->get('laratrust.middleware.register')) {
+        if (! $this->app['config']->get('laratrust.middleware.register')) {
             return;
         }
 
@@ -67,9 +71,9 @@ class LaratrustServiceProvider extends ServiceProvider
         }
 
         $middlewares = [
-            'role' => \Laratrust\Middleware\LaratrustRole::class,
-            'permission' => \Laratrust\Middleware\LaratrustPermission::class,
-            'ability' => \Laratrust\Middleware\LaratrustAbility::class,
+            'role' => \Laratrust\Middleware\Role::class,
+            'permission' => \Laratrust\Middleware\Permission::class,
+            'ability' => \Laratrust\Middleware\Ability::class,
         ];
 
         foreach ($middlewares as $key => $class) {
@@ -84,11 +88,36 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     private function registerBladeDirectives()
     {
-        if (!class_exists('\Blade')) {
+        if (! class_exists('\Blade')) {
             return;
         }
 
-        (new LaratrustRegistersBladeDirectives)->handle($this->app->version());
+        // Call to Laratrust::hasRole.
+        Blade::directive('role', function ($expression) {
+            return "<?php if (app('laratrust')->hasRole({$expression})) : ?>";
+        });
+
+        // Call to Laratrust::permission.
+        Blade::directive('permission', function ($expression) {
+            return "<?php if (app('laratrust')->hasPermission({$expression})) : ?>";
+        });
+
+        // Call to Laratrust::ability.
+        Blade::directive('ability', function ($expression) {
+            return "<?php if (app('laratrust')->ability({$expression})) : ?>";
+        });
+
+        Blade::directive('endrole', function () {
+            return "<?php endif; // app('laratrust')->hasRole ?>";
+        });
+
+        Blade::directive('endpermission', function () {
+            return "<?php endif; // app('laratrust')->permission ?>";
+        });
+
+        Blade::directive('endability', function () {
+            return "<?php endif; // app('laratrust')->ability ?>";
+        });
     }
 
     /**
@@ -98,16 +127,17 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     protected function registerRoutes()
     {
-        if (!$this->app['config']->get('laratrust.panel.register')) {
+        if (! $this->app['config']->get('laratrust.panel.register')) {
             return;
         }
 
         Route::group([
+            'domain' => config('laratrust.panel.domain', (app()->runningInConsole() === false) ? request()->getHost() : 'localhost'),
             'prefix' => config('laratrust.panel.path'),
             'namespace' => 'Laratrust\Http\Controllers',
             'middleware' => config('laratrust.panel.middleware', 'web'),
         ], function () {
-            Route::redirect('/', '/'. config('laratrust.panel.path'). '/roles-assignment');
+            Route::redirect('/', '/'.config('laratrust.panel.path').'/roles-assignment');
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
     }
@@ -123,19 +153,26 @@ class LaratrustServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register permissions to Laravel Gate
+     * Register permissions to Laravel Gate.
      *
      * @return void
      */
     protected function registerPermissionsToGate()
     {
-        if (!$this->app['config']->get('laratrust.permissions_as_gates')) {
+        if (! $this->app['config']->get('laratrust.permissions_as_gates')) {
             return;
         }
 
-        app(Gate::class)->before(function (Authorizable $user, string $ability) {
+        app(Gate::class)->before(function (Authorizable $user, mixed $ability, $attributes) {
             if (method_exists($user, 'hasPermission')) {
-                return $user->hasPermission($ability) ?: null;
+                $team = Collection::make($attributes)
+                    ->filter(fn ($attr) => ! is_bool($attr))
+                    ->first();
+                $requireAll = Collection::make($attributes)
+                    ->filter(fn ($attr) => is_bool($attr))
+                    ->first() || false;
+
+                return $user->hasPermission($ability, $team, $requireAll) ?: null;
             }
         });
     }
@@ -147,7 +184,7 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     protected function defineAssetPublishing()
     {
-        if (!$this->app['config']->get('laratrust.panel.register')) {
+        if (! $this->app['config']->get('laratrust.panel.register')) {
             return;
         }
 
@@ -192,11 +229,11 @@ class LaratrustServiceProvider extends ServiceProvider
             ], 'laratrust');
 
             $this->publishes([
-                __DIR__. '/../config/laratrust_seeder.php' => config_path('laratrust_seeder.php'),
+                __DIR__.'/../config/laratrust_seeder.php' => config_path('laratrust_seeder.php'),
             ], 'laratrust-seeder');
-            
+
             $this->publishes([
-                __DIR__. '/../resources/views/panel' => resource_path('views/vendor/laratrust/panel'),
+                __DIR__.'/../resources/views/panel' => resource_path('views/vendor/laratrust/panel'),
             ], 'laratrust-views');
         }
     }

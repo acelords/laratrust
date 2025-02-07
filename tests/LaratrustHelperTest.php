@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Laratrust\Test;
 
 use Laratrust\Helper;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\UuidInterface;
 use Laratrust\Tests\Models\Role;
 use Illuminate\Support\Facades\Config;
 use Laratrust\Tests\LaratrustTestCase;
@@ -19,6 +23,11 @@ class LaratrustHelperTest extends LaratrustTestCase
         $this->migrate();
         $this->superadmin = Role::create(['name' => 'superadmin']);
         $this->admin = Role::create(['name' => 'admin']);
+    }
+
+    public function testGetIdFor()
+    {
+        $this->assertFalse(Helper::getIdFor(Str::uuid(), 'user') instanceof UuidInterface);
     }
 
     public function testIfRoleIsEditable()
